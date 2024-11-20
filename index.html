@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile</title>
+    <style>
+        /* Basic styles for layout */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            min-height: 100vh;
+        }
+        /* Sidebar styles */
+        .sidebar {
+            width: 250px;
+            background-color: #f4f4f4;
+            padding: 20px;
+            border-right: 1px solid #ccc;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            margin: 15px 0;
+        }
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #333;
+            font-size: 18px;
+        }
+        .sidebar ul li a:hover {
+            color: #f08080;
+            text-decoration: underline;
+        }
+        /* Content styles */
+        .content {
+            flex: 1;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        .header {
+            background-color: #f08080;
+            color: white;
+            padding: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .site-description {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        .profiles-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .profile-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .profile-card {
+            display: flex;
+            align-items: center;
+            margin: 10px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 300px;
+            width: 100%;
+            cursor: pointer;
+        }
+        .person-picture {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid #ccc;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        .profile-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
+        }
+        .profile-name:hover {
+            color: #f08080;
+        }
+        /* Image Gallery Styles */
+        .gallery {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            align-items: center;
+            justify-content: center;
+        }
+        .gallery-images {
+            display: flex;
+            max-width: 90%;
+            max-height: 80%;
+            overflow: hidden;
+            position: relative;
+        }
+        .gallery-images img {
+            max-width: 100%;
+            max-height: 100%;
+            display: none;
+        }
+        .gallery-images img.active {
+            display: block;
+        }
+        .gallery-controls {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+        .gallery-controls button {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .close-gallery {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 30px;
+            background: rgba(0, 0, 0, 0.5);
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Section -->
+    <div class="sidebar">
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">News</a></li>
+            <li><a href="#">Products & Services</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">About Us</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content Section -->
+    <div class="content">
+        <div class="header">
+            Student Profile
+        </div>
+
+        <!-- Site Description -->
+        <div class="site-description">
+            <p>Энэ сайт нь түүхийн хичээлтэй холбоотой үүссэн болно.</p>
+        </div>
+
+        <!-- Profiles Title -->
+        <div class="profiles-title">
+            Намтарууд
+        </div>
+
+        <!-- Profile Cards -->
+        <div class="profile-list">
+            <!-- Profile 1 -->
+            <div class="profile-card" onclick="openGallery(1)">
+                <img src="https://assets.onecompiler.app/42ypgxm44/42ypuurq6/442292b2-c869-4ad1-9749-2b7ee9f1ccf6.jpg" alt="Student Picture" class="person-picture">
+                <span class="profile-name">Намтар 1</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Gallery Modal -->
+    <div class="gallery" id="gallery">
+        <div class="gallery-images" id="galleryImages">
+            <!-- Images will be inserted here dynamically -->
+        </div>
+        <div class="gallery-controls">
+            <button onclick="prevImage()">Prev</button>
+            <button onclick="nextImage()">Next</button>
+        </div>
+        <button class="close-gallery" onclick="closeGallery()">X</button>
+    </div>
+
+    <script>
+        // Student profiles data
+        const profiles = {
+            1: {
+                name: 'Намтар 1',
+                images: [
+                    'https://assets.onecompiler.app/42ypgxm44/42ypuurq6/442292b2-c869-4ad1-9749-2b7ee9f1ccf6.jpg',
+                    'https://assets.onecompiler.app/42ypgxm44/42ypuurq6/8ae00759-ba02-4cac-a6bd-a336e8bec091.jpg',
+                    'https://assets.onecompiler.app/42ypgxm44/42ypuurq6/01a54fe1-d551-4897-9b04-886b2fe3d69d.jpg',
+                    'https://assets.onecompiler.app/42ypgxm44/42ypuurq6/2aa8a17d-fa1c-45d3-a478-c318403d4e25.jpg',
+                    'https://assets.onecompiler.app/42ypgxm44/42ypuurq6/ea4d1c71-5cec-46a4-b915-8fb48738b61c.jpg',
+                    'https://assets.onecompiler.app/42ypgxm44/42ypuurq6/7e5511bf-e1aa-42f5-ae31-ff3263f29e10.jpg',
+                    'https://assets.onecompiler.app/42ypgxm44/42ypuurq6/7c5d2ada-9196-4579-b9dd-d7237cc81dc6.jpg',
+                    'https://assets.onecompiler.app/42ypgxm44/42ypuurq6/284a9cbf-49b9-4f35-aa20-213db171b0f5.jpg',
+                    'https://assets.onecompiler.app/42ypgxm44/42ypuurq6/affcc9f6-a239-4c04-9f21-3563628e9081.jpg',
+                    'https://assets.onecompiler.app/42ypgxm44/42ypuurq6/9c9b8ec7-4934-46df-8021-d4be4ecba036.jpg',
+                    'https://assets.onecompiler.app/42ypgxm44/42ypuurq6/download.jpg'
+                ]
+            }
+        };
+
+        let currentProfileId = 1;
+        let currentImageIndex = 0;
+
+        // Open the gallery for a specific student profile
+        function openGallery(profileId) {
+            currentProfileId = profileId;
+            currentImageIndex = 0;
+            const profile = profiles[profileId];
+            const galleryImagesDiv = document.getElementById('galleryImages');
+            galleryImagesDiv.innerHTML = ''; // Clear any previous images
+
+            // Add images to the gallery in correct order
+            profile.images.reverse().forEach((image, index) => {
+                const img = document.createElement('img');
+                img.src = image;
+                img.alt = `${profile.name} Image ${index + 1}`;
+                if (index === currentImageIndex) img.classList.add('active');
+                galleryImagesDiv.appendChild(img);
+            });
+
+            // Show the gallery modal
+            document.getElementById('gallery').style.display = 'flex';
+        }
+
+        // Close the gallery
+        function closeGallery() {
+            document.getElementById('gallery').style.display = 'none';
+        }
+
+        // Update the gallery to display the current image
+        function updateGallery() {
+            const images = document.querySelectorAll('#galleryImages img');
+            images.forEach((img, index) => {
+                img.classList.remove('active');
+                if (index === currentImageIndex) {
+                    img.classList.add('active');
+                }
+            });
+        }
+
+        // Show previous image
+        function prevImage() {
+            currentImageIndex = (currentImageIndex === 0) ? profiles[currentProfileId].images.length - 1 : currentImageIndex - 1;
+            updateGallery();
+        }
+
+        // Show next image
+        function nextImage() {
+            currentImageIndex = (currentImageIndex === profiles[currentProfileId].images.length - 1) ? 0 : currentImageIndex + 1;
+            updateGallery();
+        }
+    </script>
+</body>
+</html>
